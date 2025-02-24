@@ -1,5 +1,5 @@
-grammar       ::= WS* function-name ( WS+ function-name )* WS*
+valid-names   ::= WS* function-name ( WS+ function-name )* WS*
 function-name ::= letter (letter | digit | '_')*
 letter        ::= #'[A-Za-z]'
 digit         ::= #'[0-9]'
-WS	          ::= #'[ \t\n]'
+WS            ::= #'[ \t\n]'

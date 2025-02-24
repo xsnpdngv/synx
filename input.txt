@@ -1,2 +1,2 @@
 check_input_against_ENBF_1
-checkInputAgainstEnbf_2
+checkInputAgainstEbnf_2
