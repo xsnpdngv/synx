@@ -1,0 +1,4 @@
+function-name ::= WS* letter (letter | digit | '_')* WS*
+letter        ::= #'[A-Za-z]'
+digit         ::= #'[0-9]'
+WS	      ::= #'[ \t\n]'
