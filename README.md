@@ -2,7 +2,7 @@
 
 # EBNF/ABNF Syntax Checker
 
-Define grammar with EBNF/ABNF and check input file(s) against it
+Define grammar with EBNF/ABNF and check input file(s) against it from the command line
 
 
 ## Build
