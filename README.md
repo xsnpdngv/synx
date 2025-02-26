@@ -1,3 +1,5 @@
+[![Clojure CI](https://github.com/xsnpdngv/synx/actions/workflows/clojure.yml/badge.svg)](https://github.com/xsnpdngv/synx/actions/workflows/clojure.yml)
+
 # ClojureScript Syntax checker using Instaparse
 
 Define grammar with EBNF and check an input file against it
