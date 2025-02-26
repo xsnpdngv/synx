@@ -12,8 +12,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Install dependencies
-      run: lein deps
-    - name: Run tests
-      run: lein test
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install Clojure CLI
+      uses: DeLaGuardo/setup-clojure@11.0
+      with:
+        tools-deps: latest
+
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install npm dependencies
+      run: npm install
+
+    - name: Compile ClojureScript with shadow-cljs
+      run: npx shadow-cljs release app
