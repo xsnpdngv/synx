@@ -1,6 +1,6 @@
 [![Clojure CI](https://github.com/xsnpdngv/synx/actions/workflows/clojure.yml/badge.svg)](https://github.com/xsnpdngv/synx/actions/workflows/clojure.yml)
 
-# EBNF/ABNF Syntax Checker
+# Command-line EBNF/ABNF Syntax Checker
 
 Define grammar with EBNF/ABNF and check input file(s) against it from the command line
 
