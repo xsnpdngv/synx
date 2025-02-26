@@ -33,3 +33,9 @@ jobs:
 
     - name: Run syntax checker (optional test run)
       run: node synx.cjs grammar.ebnf input.txt
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: synx-build
+        path: synx.cjs
