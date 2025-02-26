@@ -30,3 +30,6 @@ jobs:
 
     - name: Compile ClojureScript with shadow-cljs
       run: npx shadow-cljs release app
+
+    - name: Run syntax checker (optional test run)
+      run: node synx.cjs grammar.ebnf input.txt
