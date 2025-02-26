@@ -40,10 +40,14 @@ jobs:
         name: synx-build
         path: synx.cjs
 
+    - name: Set commit hash for release tag
+      id: commit-sha
+      run: echo "tag_name=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
+
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ github.sha.substring(0, 7) }}
+        tag_name: ${{ env.tag_name }}
         name: Latest Build
         draft: false
         prerelease: false
