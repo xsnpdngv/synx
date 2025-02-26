@@ -43,7 +43,7 @@ jobs:
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ github.sha }}
+        tag_name: ${{ github.sha.substring(0, 7) }}
         name: Latest Build
         draft: false
         prerelease: false
