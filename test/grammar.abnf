@@ -1,0 +1,5 @@
+valid-names   = *WS function-name *( 1*WS function-name ) *WS
+function-name = ALPHA *(ALPHA / DIGIT / '_')
+WS            = ' ' / HTAB / LF
+HTAB          = %x09
+LF            = %x0A

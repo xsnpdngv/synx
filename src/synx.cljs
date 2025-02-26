@@ -9,25 +9,32 @@
       (println "Error reading file:" filename)
       (js/process.exit 1))))
 
-(defn validate-input [grammar-file input-file]
-  (let [grammar (read-file grammar-file)
-        input (read-file input-file)
-        parser (insta/parser grammar)
+(defn create-parser [grammar-file abnf?]
+  (let [grammar (read-file grammar-file)]
+    (if abnf?
+      (insta/parser grammar :input-format :abnf)
+      (insta/parser grammar))))
+
+(defn validate-input [parser input-file]
+  (let [input (read-file input-file)
         result (parser input)]
     (if (insta/failure? result)
       (do (println (insta/get-failure result))
-          false)  ;; Return false instead of exiting
-      true)))  ;; Return true if valid input
+          false)
+      true)))
 
 (defn -main [& args]
   (if (< (count args) 2)
-    (do (.write js/process.stderr "Usage: node synx.cjs <grammar.ebnf> <input1.txt> [<input2.txt> ...]\n")
+    (do (.write js/process.stderr "Usage: node synx.cjs [--abnf] <grammar.xbnf> <input1.txt> [<input2.txt> ...]\n")
         (js/process.exit 1))
-    (let [grammar-file (first args)
-          input-files (rest args)
+    (let [[options files] (split-with #(= % "--abnf") args)
+          abnf? (some #(= % "--abnf") options)
+          grammar-file (first files)
+          parser (create-parser grammar-file abnf?)
+          input-files (rest files)
           results (doall (map (fn [input-file]
                                 (println "[ CHECK    ] " input-file)
-                                (let [valid? (validate-input grammar-file input-file)]
+                                (let [valid? (validate-input parser input-file)]
                                   (if valid?
                                     (println "[       OK ] " input-file)
                                     (println "[    ERROR ] " input-file))
