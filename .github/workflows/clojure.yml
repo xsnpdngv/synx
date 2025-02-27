@@ -42,7 +42,7 @@ jobs:
 
     - name: Set commit hash for release tag
       id: commit-sha
-      run: echo "tag_name=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
+      run: echo "tag_name=$(echo $(date +"%Y-%m-%d")_$(echo ${GITHUB_SHA} | cut -c1-7))" >> $GITHUB_ENV
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
