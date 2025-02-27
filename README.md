@@ -12,6 +12,7 @@ npm install
 npm run build
 ```
 
+
 ## Run
 
 ```bash
@@ -51,4 +52,13 @@ node synx.cjs --abnf test/grammar.abnf test/input*.txt
 #    [    ERROR ]  test/input-nok.txt
 #    [ CHECK    ]  test/input-ok.txt
 #    [       OK ]  test/input-ok.txt
+
+
+echo "%@#$&^*#" | node synx.cjs test/grammar.ebnf
+# => Parse error at line 1, column 1:
+#    %@#$&^*#
+#    ^
+#    Expected one of:
+#    #"[A-Za-z]"
+#    #"[ \t\n]"
 ```
