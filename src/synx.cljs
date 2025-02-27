@@ -37,10 +37,10 @@
 (defn validate-input-file [parser input-file]
   (println "[ CHECK    ] " input-file)
   (if (validate-input parser (read-file input-file))
-    (do (println "[    ERROR ] " input-file)
-        false)
     (do (println "[       OK ] " input-file)
-        true)))
+        true)
+    (do (println "[    ERROR ] " input-file)
+        false)))
 
 
 (defn -main [& args]
