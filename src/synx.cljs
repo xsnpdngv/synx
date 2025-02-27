@@ -16,33 +16,27 @@
       (insta/parser grammar))))
 
 (defn validate-input [parser input-file]
+  (println "[ CHECK    ] " input-file)
   (let [input (read-file input-file)
         result (parser input)]
     (if (insta/failure? result)
       (do (println (insta/get-failure result))
+          (println "[    ERROR ] " input-file)
           false)
-      true)))
+      (do (println "[       OK ] " input-file)
+          true))))
 
 (defn -main [& args]
   (if (< (count args) 2)
     (do (.write js/process.stderr "Usage: node synx.cjs [--abnf] <grammar.xbnf> <input1.txt> [<input2.txt> ...]\n")
         (js/process.exit 1))
-    (let [[options files] (split-with #(= % "--abnf") args)
-          abnf? (some #(= % "--abnf") options)
+    (let [abnf? (some #(= % "--abnf") args)
+          files (remove #(= % "--abnf") args)
           grammar-file (first files)
           parser (create-parser grammar-file abnf?)
           input-files (rest files)
-          results (doall (map (fn [input-file]
-                                (println "[ CHECK    ] " input-file)
-                                (let [valid? (validate-input parser input-file)]
-                                  (if valid?
-                                    (println "[       OK ] " input-file)
-                                    (println "[    ERROR ] " input-file))
-                                  valid?)) 
-                              input-files))
+          results (doall (map #(validate-input parser %) input-files))
           all-valid? (every? true? results)]  ;; Check if all files passed
-      (if (not all-valid?) 
-        (js/process.exit 1)  ;; Exit with error if any file is invalid
-        (js/process.exit 0))))) ;; Exit with success if all files are valid
+      (js/process.exit (if all-valid? 0 1)))))
 
 (set! *main-cli-fn* -main)
