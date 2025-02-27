@@ -2,7 +2,7 @@
 
 # Command-line EBNF/ABNF Syntax Checker
 
-Define grammar with EBNF/ABNF and check input file(s) against it from the command line
+Define grammar with EBNF/ABNF and check input file(s) or standard input against it from the command line
 
 
 ## Build
@@ -17,7 +17,8 @@ npm run build
 
 ```bash
 node synx.cjs
-# => Usage: node synx.cjs [--abnf] <grammar.xbnf> <input1.txt> [<input2.txt> ...]
+# => Usage: node synx.cjs [--abnf] <grammar-file> <input-file1> [<input-file2> ...]
+#           echo 'text' | node synx.cjs [--abnf] <grammar-file>
 
 
 node synx.cjs test/grammar.ebnf test/input*.txt
