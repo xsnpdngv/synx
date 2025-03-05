@@ -17,8 +17,13 @@ npm run build
 
 ```bash
 node synx.cjs
-# => Usage: node synx.cjs [--abnf] <grammar-file> <input-file1> [<input-file2> ...]
-#           echo 'text' | node synx.cjs [--abnf] <grammar-file>
+# => Usage: node synx.cjs [--abnf] <grammar-(file|url)> <input-file1> [<input-file2> ...]
+#           echo 'text' | node synx.cjs [--abnf] <grammar-(file|url)>
+
+
+node synx.cjs --abnf http://sip.asdf.hu sip-invite.txt
+# => [ CHECK    ]  sip-invite.txt
+#    [       OK ]  sip-invite.txt
 
 
 node synx.cjs test/grammar.ebnf test/input*.txt
