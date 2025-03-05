@@ -5,11 +5,12 @@
   "main": "synx.cjs",
   "scripts": {
     "build": "npx shadow-cljs release app",
-    "start": "node synx.cjs grammar.ebnf input.txt"
+    "dev":   "npx shadow-cljs compile app",
+    "test":  "node synx.cjs test/grammar.ebnf test/input-ok.txt"
   },
   "dependencies": {
+    "node-fetch": "^3.3.2",
     "shadow-cljs": "^2.25.2"
   },
-  "devDependencies": {},
   "type": "module"
 }
