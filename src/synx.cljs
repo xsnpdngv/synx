@@ -46,8 +46,8 @@
                   (parser input))]
        (if (insta/failure? result)
           (do (println (insta/get-failure result))
-              true)
-          false)))
+              false)
+          true)))
 
 
 (defn validate-input-file [parser input-file start-rule]
@@ -80,7 +80,7 @@
         (.then (fn [parser]
           (if (empty? input-files)
             (-> (read-stdin)
-                (.then (fn [stdin-input] (js/process.exit (validate-input parser stdin-input start-rule)))))
+                (.then (fn [stdin-input] (js/process.exit (if (validate-input parser stdin-input start-rule) 0 1)))))
             (let [results (doall (map #(validate-input-file parser % start-rule) input-files))
                   all-valid? (every? true? results)]
                   (js/process.exit (if all-valid? 0 1)))))))))
