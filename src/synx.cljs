@@ -40,17 +40,19 @@
       (.then (fn [grammar] (apply insta/parser grammar (when abnf? [:input-format :abnf]))))))
 
 
-(defn validate-input [parser input]
-  (let [result (parser input)]
+(defn validate-input [parser input start-rule]
+   (let [result (if start-rule
+                  (parser input :start start-rule)
+                  (parser input))]
        (if (insta/failure? result)
           (do (println (insta/get-failure result))
-              false)
-          true)))
+              true)
+          false)))
 
 
-(defn validate-input-file [parser input-file]
+(defn validate-input-file [parser input-file start-rule]
   (println "[ CHECK    ] " input-file)
-  (if (validate-input parser (read-file input-file))
+  (if (validate-input parser (read-file input-file) start-rule)
     (do (println "[       OK ] " input-file)
         true)
     (do (println "[    ERROR ] " input-file)
@@ -60,14 +62,16 @@
 (defn -main [& args]
 
   (if (< (count args) 1)
-    (do (.write js/process.stderr "Usage: node synx.cjs [--abnf] <grammar-(file|url)>) <input-file1> [<input-file2> ...]\n")
-        (.write js/process.stderr "       echo 'test' | node synx.cjs [--abnf] <grammar-(file|url)>\n\n")
+    (do (.write js/process.stderr "Usage: node synx.cjs [--abnf] <grammar-(file|url)>) <input-file1> [...] [:start-rule]\n")
+        (.write js/process.stderr "       echo 'test' | node synx.cjs [--abnf] <grammar-(file|url)> [:start-rule]\n\n")
         (js/process.exit 1)))
 
   (let [abnf? (some #(= % "--abnf") args)
-        files (remove #(= % "--abnf") args)
-        grammar-file (first files)
-        input-files (rest files)
+        args (remove #(= % "--abnf") args)
+        start-rule (some #(when (clojure.string/starts-with? % ":") (keyword (subs % 1))) args)
+        args (remove #(when (clojure.string/starts-with? % ":") (keyword (subs % 1))) args)
+        grammar-file (first args)
+        input-files (rest args)
         grammar-source (if (re-matches #"https?://.*" grammar-file)
                          (fetch-url grammar-file)
                          (js/Promise.resolve (read-file grammar-file)))]
@@ -76,8 +80,8 @@
         (.then (fn [parser]
           (if (empty? input-files)
             (-> (read-stdin)
-                (.then (fn [stdin-input] (js/process.exit (validate-input parser stdin-input)))))
-            (let [results (doall (map #(validate-input-file parser %) input-files))
+                (.then (fn [stdin-input] (js/process.exit (validate-input parser stdin-input start-rule)))))
+            (let [results (doall (map #(validate-input-file parser % start-rule) input-files))
                   all-valid? (every? true? results)]
                   (js/process.exit (if all-valid? 0 1)))))))))
 
