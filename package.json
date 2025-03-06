@@ -5,6 +5,7 @@
   "main": "synx.cjs",
   "scripts": {
     "build": "npx shadow-cljs release app",
+    "postbuild": "chmod +x synx.cjs",
     "dev":   "npx shadow-cljs compile app",
     "test":  "node synx.cjs test/grammar.ebnf test/input-ok.txt"
   },
